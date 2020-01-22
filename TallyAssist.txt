@@ -1,0 +1,391 @@
+
+;; NatLang Query Event Handler
+
+[System:Events]
+	TomAssistActionInvoke:NatLang Query:@@QueryContainsValidtext:Call:InitCommandRecognition
+
+;;command handling function
+
+[Function:InitCommandRecognition]
+ Variable:Ptextstat:Number:0
+ 01:Call:TokenizeQuery	
+ ;;hello block
+ 
+ 02:IF:@@IsQueryForHello
+ 04:Set:Ptextstat:1
+ 05:Call:RunCommandSpeakProcess:@@assistantwelcome
+ 06:End If
+ ;; purchase block
+ 
+ 12:IF:@@IsQueryForPurchase
+ 13:Set:Ptextstat:1
+ 1a:Log:@@TomPurchaseTotal
+ 14:Call:RunCommandSpeakProcess:@@TomPurchaseamt
+ 15:End If
+ ;;Sales Block
+ 
+ 22:IF:@@IsQueryForSales
+ 23:Set:Ptextstat:1
+ 1b:Log:@@TomSalesTotal
+ 24:Call:RunCommandSpeakProcess:@@TomSaleAmt
+ 25:End If
+;;Receivable Block
+
+ 33:IF:@@IsQueryForRcvble
+ 34:Set:Ptextstat:1
+ 1c:Log:@@TomRcvTotal
+ 35:Call:RunCommandSpeakProcess:@@TomRvcAmt
+ 36:End If
+ 
+;;payable block
+
+ 42:IF:@@IsQueryForPyble
+ 43:Set:Ptextstat:1
+ 1d:Log:@@TomPayTotal
+ 44:Call:RunCommandSpeakProcess:@@TomPayAmt
+ 45:End If
+;;Bank Block
+
+ 53:IF:@@IsQueryForBank
+ 54:Set:Ptextstat:1
+ 1e:Log:@@TomBankTotal
+ 55:Call:RunCommandSpeakProcess:@@TomBankAmt
+ 56:End If
+;;cah block
+
+ 62:IF:@@IsQueryForCash
+ 63:Set:Ptextstat:1
+ 1f:Log:@@TomCashTotal
+ 64:Call:RunCommandSpeakProcess:@@TomCashAmt
+ 65:End If
+;;Stock Block
+
+ 72:IF:@@IsQueryForStock
+ 73:Set:Ptextstat:1
+ 1g:Log:@@TomStockTotal
+ 74:Call:RunCommandSpeakProcess:@@TomStockAmt
+ 75:End If
+;;Exp Bloxk
+
+ 82:IF:@@IsQueryForExp
+ 83:Set:Ptextstat:1
+ 1z:Log:@@TomExpTotal
+ 84:Call:RunCommandSpeakProcess:@@TomExpAmt
+ 85:End If
+ ;;Income Block
+ 
+ 92:IF:@@IsQueryForInc
+ 93:Set:Ptextstat:1
+ 1h:Log:@@TomIncmTotal
+ 94:Call:RunCommandSpeakProcess:@@TomInmAmt
+ 95:End If
+;;Capital Block
+
+ 112:IF:@@IsQueryForCap
+ 113:Set:Ptextstat:1
+ 1i:Log:@@TomCapitalTotal
+ 114:Call:RunCommandSpeakProcess:@@TomCapitalAmt
+ 115:End If
+ ;;Loan Block
+ 
+ 122:IF:@@IsQueryForLoan
+ 123:Set:Ptextstat:1
+ 1j:Log:@@TomLoansTotal
+ 124:Call:RunCommandSpeakProcess:@@TomLoansAmt
+ 125:End If 
+ ;;Asset Block
+ 
+ 132:IF:@@IsQueryForAsset
+ 133:Set:Ptextstat:1
+ 1k:Log:@@TomAssetTotal
+ 134:Call:RunCommandSpeakProcess:@@TomAssetAmt
+ 135:End If 
+ ;;Investment Block
+ 
+ 142:IF:@@IsQueryForInvst
+ 143:Set:Ptextstat:1
+ 1m:Log:@@TomInvestMentTotal
+ 144:Call:RunCommandSpeakProcess:@@TomInvestAmt
+ 145:End If 
+ ;;Deposit Block
+ 
+ 152:IF:@@IsQueryForDeposit
+ 153:Set:Ptextstat:1
+ 1n:Log:@@TomDeposTotal
+ 154:Call:RunCommandSpeakProcess:@@TomdepositAmt
+ 155:End If 
+;;Duty Block
+
+ 162:IF:@@IsQueryForDuty
+ 163:Set:Ptextstat:1
+ 1o:Log:@@TomDutiesTotal
+ 164:Call:RunCommandSpeakProcess:@@TomtaxAmt
+ 165:End If 
+;;Advances Block
+
+ 172:IF:@@IsQueryForadv
+ 173:Set:Ptextstat:1
+ 1p:Log:@@TomAdvTotal
+ 174:Call:RunCommandSpeakProcess:@@TomAdvAmt
+ 175:End If 
+;;Provision Block
+
+ 182:IF:@@IsQueryForProvis
+ 183:Set:Ptextstat:1
+ 1q:Log:@@TomProvisionTotal
+ 184:Call:RunCommandSpeakProcess:@@TomProvisionAmt
+ 185:End If 
+
+;; help block
+
+ 192:IF:@@IsQueryForHelp
+ 193:Set:Ptextstat:1
+ a11:Log:"SLS   -   (to know sales amount)" 
+ a12:Log:"PCH   -   (to know purchase amount)"
+ a13:Log:"RCB   -   (to know Receivables amount)" 
+ a14:Log:"PYB   -   (to know payables amount)"
+ a15:Log:"BNK   -   (to know bank balance)" 
+ a16:Log:"CSH   -   (to know cash balance)"
+ a17:Log:"STK   -   (to know stock value)" 
+ a18:Log:"EXP   -   (to know expenses amount)"
+ a19:Log:"INM   -   (to know income amount)" 
+ a20:Log:"CPT   -   (to know capital amount)"
+ a21:Log:"LNS   -   (to know loans amount)" 
+ a22:Log:"AST   -   (to know asset value)"
+ a23:Log:"INVST -   (to know investment amount)" 
+ a24:Log:"DPTS  -   (to know deposits amount)"
+ a25:Log:"TXS   -   (to know tax amount)"
+ a26:Log:"ADVS  -   (to know advances amount)"
+ a27:Log:"PRVS  -   (to know provisions amount)"
+ 028:Log:"OPEN enter the url   -   (to open a website ,url should be valid ex: www.somewebsite.com)"
+ 194:Set:SVNatLangRequestProcessed:Yes
+ 195:End If 
+
+;; open WebBrowser Block
+
+222:IF:@@IsQueryToOpenWeb
+223:Set:Ptextstat:1
+224:Browse Url:##TallyAssistRequestHolder[2]
+225:Set:SVNatLangRequestProcessed:Yes
+226:End If 
+
+ ;;; default block
+  
+ df:If:##Ptextstat = 0 
+ q1:Call:RunCommandSpeakProcess:@@QueryNotUnderstand
+ q2:End If
+ q3:Return
+
+
+[Function:RunCommandSpeakProcess]
+	Parameter:PCommandtext :String
+	01:Exec COM Interface:MStextoSpeechEngine:##PCommandtext
+	03:Set:SVNatLangResponse: if ##Ptextstat = 0 then "Sorry I Can't Understand , Iam Still Learning.. Type Help for More Info" else "Task Completed"
+    04:Set:SVNatLangRequestProcessed:Yes
+	05:Return
+
+;;function to tokenize the request query
+
+[Function:TokenizeQuery]
+	01:List Delete Ex:TallyAssistRequestHolder
+	02:For Token:TokenVar:##SvNatLangFullRequest:" "
+	03:List Add Ex:TallyAssistRequestHolder:##TokenVar
+	04:End For
+
+[System:Formulas]
+	
+	QueryContainsValidtext:NOT ($$IsEmpty:##SvNatLangFullRequest)
+	IsQueryForHello:##SvNatLangFullRequest CONTAINS "Hey Tom" or ##SvNatLangFullRequest CONTAINS "Hey"
+	IsQueryForPurchase : ##SvNatLangFullRequest CONTAINS "PCH"
+	IsQueryForSales : ##SvNatLangFullRequest CONTAINS "SLS"
+	IsQueryForRcvble : ##SvNatLangFullRequest CONTAINS "RCB"
+	IsQueryForPyble : ##SvNatLangFullRequest CONTAINS "PYB"
+	IsQueryForBank : ##SvNatLangFullRequest CONTAINS "BNK"
+	IsQueryForCash : ##SvNatLangFullRequest CONTAINS "CSH"
+	IsQueryForStock : ##SvNatLangFullRequest CONTAINS "STK"
+	IsQueryForExp : ##SvNatLangFullRequest CONTAINS "EXP"
+	IsQueryForInc : ##SvNatLangFullRequest CONTAINS "INM"
+	IsQueryForCap : ##SvNatLangFullRequest CONTAINS "CPT"
+	IsQueryForLoan : ##SvNatLangFullRequest CONTAINS "LNS"
+    IsQueryForAsset : ##SvNatLangFullRequest CONTAINS "AST"
+	IsQueryForInvst : ##SvNatLangFullRequest CONTAINS "INVST"
+	IsQueryForDeposit : ##SvNatLangFullRequest CONTAINS "DPTS"
+	IsQueryForDuty : ##SvNatLangFullRequest CONTAINS "TXS"
+	IsQueryForadv : ##SvNatLangFullRequest CONTAINS "ADVS"
+	IsQueryForProvis : ##SvNatLangFullRequest CONTAINS "PRVS"
+	IsQueryForHelp : ##SvNatLangFullRequest CONTAINS "HELP"
+	IsQueryToOpenWeb : ##SvNatLangFullRequest CONTAINS "OPEN"
+	assistantwelcome:"Hi, My Name is Tom,Iam Your Tally Assistant"
+	QueryNotUnderstand:"Sorry I Could Not  Understand ,Try again with different KeyWord or Type Help"
+	
+
+     TomHelpCommand1 :"SLS - (to know sales amount)" + $$NewLine + "PCH - (to know purchase amount)"
+	 TomHelpCommand2 :$$NewLine + "RCB - (to know Receivables amount)" + $$NewLine + "PYB - (to know payables amount)"
+	 TomHelpCommand3 :$$NewLine + "BNK - (to know bank balance)" + $$NewLine + "CSH - (to know cash balance)"
+	 TomHelpCommand4 :$$NewLine + "STK - (to know stock value)" + $$NewLine + "EXP - (to know expenses amount)"
+	 TomHelpCommand5 :$$NewLine + "INM - (to know income amount)" + $$NewLine + "CPT - (to know capital amount)"
+     TomHelpCommand6 :$$NewLine + "LNS - (to know loans amount)" + $$NewLine + "AST - (to know asset value)"
+	 TomHelpCommand7 :$$NewLine + "INVST -(to know investment amount)" + $$NewLine + "DPTS - (to know deposits amount)"
+	 TomHelpCommand8 :$$NewLine + "TXS - (to know tax amount)" + $$NewLine + "ADVS - (to know advances amount)"
+	 TomHelpCommand9 :$$NewLine + "PRVS - (to know provisions amount)"
+	 tomhelpcmd11  :@@TomHelpCommand1+@@TomHelpCommand2+@@TomHelpCommand3+@@TomHelpCommand4+@@TomHelpCommand5+@@TomHelpCommand6
+	 tomhelpcmd22    :@@TomHelpCommand7+@@TomHelpCommand8+@@TomHelpCommand9 
+	 
+    
+	
+	TomPurchaseTotal :($$CollAmtTotal:TomPurchaseVouchersColl:$Amount)
+	TomSalesTotal :$$CollAmtTotal:TomSalesVouchersColl:$Amount
+	TomRcvTotal :$$CollAmtTotal:TomBillsRcTotalColl:$ClosingBalance
+    TomPayTotal : $$CollAmtTotal:TomBillsPyTotalColl:$ClosingBalance
+	TomCashTotal :$$CollAmtTotal:TomCashBalanceColl:$ClosingBalance 
+    TomBankTotal : $$CollAmtTotal:TomBankBalanceColl:$ClosingBalance 
+	TomStockTotal : $$CollAmtTotal:TomStockClosingColl:$ClosingValue
+	TomExpTotal  :$$CollAmtTotal:TomExpenseColl:$ClosingBalance 
+	TomIncmTotal : $$CollAmtTotal:TomIncomeColl:$ClosingBalance 
+	TomCapitalTotal : $$CollAmtTotal:TomCapitalAmountColl:$ClosingBalance
+	TomLoansTotal : $$CollAmtTotal:TomLoansAmountColl:$ClosingBalance
+    TomAssetTotal : $$CollAmtTotal:TomFixedAssetAmountColl:$ClosingBalance
+    TomInvestMentTotal :$$CollAmtTotal:TomInvestmentAmountColl:$ClosingBalance 	
+	TomDeposTotal : $$CollAmtTotal:TomDepositAmountColl:$ClosingBalance 
+	TomDutiesTotal : $$CollAmtTotal:TomDutyTaxAmountColl:$ClosingBalance 
+	TomAdvTotal : $$CollAmtTotal:TomAdvanceAmountColl:$ClosingBalance 
+    TomProvisionTotal :$$CollAmtTotal:TomProvisionAmountColl:$ClosingBalance 
+	
+	TomPurchaseamt :"Current Total Purchase Amount is "  + (if $$IsDr:@@TomPurchaseTotal then ("Debit " + $$InWords:@@TomPurchaseTotal) else ("Credit" +  $$InWords:@@TomPurchaseTotal))
+    TomSaleAmt : "Current Total Sales Amount is "  + (if $$IsDr:@@TomSalesTotal then ("Debit " + $$InWords:@@TomSalesTotal) else ("Credit" +  $$InWords:@@TomSalesTotal))
+    TomRvcAmt : "Current Total Receivables Amount is "  + (if $$IsDr:@@TomRcvTotal then ("Debit " + $$InWords:@@TomRcvTotal) else ("Credit" +  $$InWords:@@TomRcvTotal))
+    TomPayAmt : "Current Total Payables Amount is "  + (if $$IsDr:@@TomPayTotal then ("Debit " + $$InWords:@@TomPayTotal) else ("Credit" +  $$InWords:@@TomPayTotal))
+	TomCashAmt : "Current Total Cash Balance is "  + (if $$IsDr:@@TomCashTotal then ("Debit " + $$InWords:@@TomCashTotal) else ("Credit" +  $$InWords:@@TomCashTotal))
+	TomBankAmt : "Current Total Bank Balance is "  + (if $$IsDr:@@TomBankTotal then ("Debit " + $$InWords:@@TomBankTotal) else ("Credit" +  $$InWords:@@TomBankTotal))
+	TomStockAmt : "Current Closing Stock Value is " + (if $$IsDr:@@TomStockTotal then ("Debit " + $$InWords:@@TomStockTotal) else ("Credit" +  $$InWords:@@TomStockTotal))
+	TomExpAmt : "Current Total Expense Amount is "  + (if $$IsDr:@@TomExpTotal then ("Debit " + $$InWords:@@TomExpTotal) else ("Credit" +  $$InWords:@@TomExpTotal))
+	TomInmAmt : "Current Total Income Amount is "  + (if $$IsDr:@@TomIncmTotal then ("Debit " + $$InWords:@@TomIncmTotal) else ("Credit" +  $$InWords:@@TomIncmTotal))
+	TomCapitalAmt : "Current Total Capital Amount is "  + (if $$IsDr:@@TomCapitalTotal then ("Debit " + $$InWords:@@TomCapitalTotal) else ("Credit" +  $$InWords:@@TomCapitalTotal))
+	TomLoansAmt : "Current Total Loan Amount is "  + (if $$IsDr:@@TomLoansTotal then ("Debit " + $$InWords:@@TomLoansTotal) else ("Credit" +  $$InWords:@@TomLoansTotal))
+	TomAssetAmt : "Current Total Asset Value is "  + (if $$IsDr:@@TomAssetTotal then ("Debit " + $$InWords:@@TomAssetTotal) else ("Credit" +  $$InWords:@@TomAssetTotal))
+	TomInvestAmt : "Current Total Investment Amount is "  + (if $$IsDr:@@TomInvestMentTotal  then ("Debit " + $$InWords:@@TomInvestMentTotal ) else ("Credit" +  $$InWords:@@TomInvestMentTotal ))
+    TomdepositAmt : "Current Total Deposit Amount is "  +(if $$IsDr:@@TomDeposTotal then ("Debit " + $$InWords:@@TomDeposTotal) else ("Credit" +  $$InWords:@@TomDeposTotal))
+    TomtaxAmt : "Current Tax Total is "  + (if $$IsDr:@@TomDutiesTotal  then ("Debit " + $$InWords:@@TomDutiesTotal ) else ("Credit" +  $$InWords:@@TomDutiesTotal))
+    TomAdvAmt : "Current Total Advances is "  + (if $$IsDr:@@TomAdvTotal then ("Debit " + $$InWords:@@TomAdvTotal) else ("Credit" +  $$InWords:@@TomAdvTotal))
+    TomProvisionAmt : "Current Total Provisions is "  + (if $$IsDr:@@TomProvisionTotal then ("Debit " + $$InWords:@@TomProvisionTotal) else ("Credit" +  $$InWords:@@TomProvisionTotal))
+
+;; MS Com Dll that Convert text to Speech
+
+[COM Interface:	MStextoSpeechEngine]
+
+    Project      	: Sapi				
+	Class           : SpVoice			
+	Interface  		: Speak				
+	Parameter 	    : P1	: String	
+
+;;list var for holding request text
+
+[System:Variable]
+	
+	listvar: TallyAssistRequestHolder :String 
+	
+
+
+;;;collections for computing totals
+
+[Collection:TomPurchaseVouchersColl]
+	Type:Vouchers:VoucherType
+	Belongs To:Yes
+	Child Of:$$VchTypePurchase
+	Fetch:Amount
+	
+[Collection:TomSalesVouchersColl]
+	Type:Vouchers:VoucherType
+	Child Of:$$VchTypeSales
+	Belongs To:Yes
+	Fetch:Amount
+	
+	
+[Collection:TomBillsRcTotalColl]
+	Type:Bills
+	Fetch:ClosingBalance
+	Filter:IsReceivable
+	
+[Collection:TomBillsPyTotalColl]
+    Type:Bills
+	Fetch:ClosingBalance
+	Filter:IsPayable
+	
+[Collection:TomCashBalanceColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:PrintForCashGroup
+	
+[Collection:TomBankBalanceColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:PrintForBankGroup
+	
+[Collection:TomStockClosingColl]
+	Type:StockItem
+	Fetch:ClosingValue
+	
+[Collection:TomExpenseColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyExpenseLedgers
+	
+[Collection:TomIncomeColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyIncomeLedgers
+	
+[Collection:TomCapitalAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyCapitalLedgers
+	
+[Collection:TomLoansAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyLoanAccLedgers
+	
+[Collection:TomFixedAssetAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyFixedAssetLedgers
+	
+[Collection:TomInvestmentAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyInvestmentLedgers
+	
+[Collection:TomDepositAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyDepositsLedgers
+	
+[Collection:TomDutyTaxAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyDutyTaxLedgers
+	
+[Collection:TomAdvanceAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyAdvanceLedgers
+	
+[Collection:TomProvisionAmountColl]
+	Use:AllLedger
+	Fetch:ClosingBalance
+	Filter:onlyAdvanceLedgers
+	
+;; system formulas for filtering
+
+[System:Formulas]
+	onlyExpenseLedgers:($$IsBelongsTo:$$GroupDirectExpenses) or ($$IsBelongsTo:$$GroupIndirectExpenses)
+	onlyIncomeLedgers:($$IsBelongsTo:$$GroupDirectIncomes) or ($$IsBelongsTo:$$GroupIndirectIncomes)
+	onlyCapitalLedgers:$$IsBelongsTo:$$GroupCapital
+	onlyLoanAccLedgers:($$IsBelongsTo:$$GroupSecuredLoans) or ($$IsBelongsTo:$$GroupUnsecuredLoans)
+	onlyFixedAssetLedgers:($$IsBelongsTo:$$GroupFixedAssets)
+    onlyInvestmentLedgers:($$IsBelongsTo:$$GroupInvestments)
+	onlyDepositsLedgers:($$IsBelongsTo:$$GroupDeposits)
+	onlyDutyTaxLedgers:($$IsBelongsTo:$$GroupDuties)
+	onlyAdvanceLedgers:($$IsBelongsTo:$$GroupAdvances)
+	onlyprovisionLedgers:($$IsBelongsTo:$$GroupProvisions)
+	
